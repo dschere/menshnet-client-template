@@ -99,7 +99,7 @@ def on_init(menshnet, config):
     # must declare globals in python restricted execution mode
     global App
 
-    App.on_init(menshnet, config):
+    App.on_init(menshnet, config)
 
 def on_frame(menshnet, frame):
     # must declare globals in python restricted execution mode
