@@ -35,6 +35,9 @@ class FrozenVideoSensor:
     
 
     def __init__(self):
+        # must declare globals in python restricted execution mode
+        global BELOW_THRESHOLD
+
         self.threshold = 0.95
         self.histogram = []
         self.max_hsize = 8
@@ -53,6 +56,8 @@ class FrozenVideoSensor:
         menshnet.log.info("frozen video detector now initialized.") 
 
     def on_frame(self, menshnet, frame):
+        # must declare globals in python restricted execution mode
+        global BELOW_THRESHOLD, ABOVE_THRESHOLD
         
         if self.frame_count > 0:
             similarity = self.ssi(frame, self.last_frame)
@@ -76,6 +81,7 @@ class FrozenVideoSensor:
                 # remove oldest sample
                 del self.histogram[0]
 
+
         self.last_frame = frame 
 
 
@@ -90,9 +96,15 @@ App = FrozenVideoSensor()
 #---------------------------#
 
 def on_init(menshnet, config):
+    # must declare globals in python restricted execution mode
+    global App
+
     App.on_init(menshnet, config):
 
 def on_frame(menshnet, frame):
+    # must declare globals in python restricted execution mode
+    global App
+
     App.on_frame(menshnet, frame)
 
 
