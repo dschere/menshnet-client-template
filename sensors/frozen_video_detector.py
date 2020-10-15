@@ -84,7 +84,7 @@ class FrozenVideoSensor:
                 # remove oldest sample
                 del self.histogram[0]
 
-        self.frame_count = self.frame_count + 1
+        self.frame_count += 1
         self.last_frame = frame 
 
 
