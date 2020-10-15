@@ -51,7 +51,7 @@ class FrozenVideoSensor:
         self.threshold = config.get("threshold", self.threshold)
         self.max_hsize = config.get("histogram_size", self.max_hsize)
         self.event_name = config.get("event_name",self.event_name)
-        self.ssi = menshnet.lib.skimage.metrics.structural_similarity 
+        self.ssi = menshnet.lib.fpga.ssim
         
         menshnet.log.info("frozen video detector now initialized.") 
 
