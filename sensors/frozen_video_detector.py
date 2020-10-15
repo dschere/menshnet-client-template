@@ -58,9 +58,12 @@ class FrozenVideoSensor:
     def on_frame(self, menshnet, frame):
         # must declare globals in python restricted execution mode
         global BELOW_THRESHOLD, ABOVE_THRESHOLD
-        
+       
+        menshnet.log.debug("frame %d" % self.frame_count)
+
         if self.frame_count > 0:
             similarity = self.ssi(frame, self.last_frame)
+            menshnet.log.debug("ssi %f" % similarity)
             self.histogram.append(similarity)
             if len(self.histogram) == self.max_hsize:
                 ave = sum(self.histogram)/self.max_hsize
@@ -81,7 +84,7 @@ class FrozenVideoSensor:
                 # remove oldest sample
                 del self.histogram[0]
 
-
+        self.frame_count += 1
         self.last_frame = frame 
 
 
