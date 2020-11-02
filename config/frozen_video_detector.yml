@@ -51,7 +51,8 @@ pipeline:
             # --------------------------------------------------
             histogram_size: $histogram_size 8
             # event name
-            event_name: frozen-video
+            event_trigger: frozen-video
+            event_ssim: ssim-value
             threshold: $threshold   0.98
      
 

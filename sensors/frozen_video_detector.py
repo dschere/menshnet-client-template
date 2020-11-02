@@ -44,13 +44,15 @@ class FrozenVideoSensor:
         self.last_frame = None
         self.frame_count = 0
         self.ssi = None
-        self.event_name = "frozen-video" 
+        self.event_trigger = "frozen-video"
+        self.event_ssim = "ssim-value" 
         self.last_state = BELOW_THRESHOLD
 
     def on_init(self, menshnet, config):
         self.threshold = config.get("threshold", self.threshold)
         self.max_hsize = config.get("histogram_size", self.max_hsize)
-        self.event_name = config.get("event_name",self.event_name)
+        self.event_trigger = config.get("event_trigger",self.event_trigger)
+        seld.event_ssim = config.get("event_ssim",self.event_ssim)
         self.ssi = menshnet.lib.fpga.ssim
         
         menshnet.log.info("frozen video detector now initialized.") 
@@ -67,6 +69,9 @@ class FrozenVideoSensor:
             self.histogram.append(similarity)
             if len(self.histogram) == self.max_hsize:
                 ave = sum(self.histogram)/self.max_hsize
+
+                # send event
+                menshnet.event.emit(self.event_ssim, ave)
 
                 if ave >= self.threshold and self.last_state == BELOW_THRESHOLD:
                     # state transition sent event
