@@ -28,8 +28,8 @@ They are accessable by using menshnet.lib.<libname>
 
 """
 
-ABOVE_THRESHOLD = 1
-BELOW_THRESHOLD = 0
+ABOVE_THRESHOLD = True
+BELOW_THRESHOLD = False
 
 class FrozenVideoSensor:
     
@@ -78,13 +78,13 @@ class FrozenVideoSensor:
                     self.last_state = ABOVE_THRESHOLD 
                     # tell any listening clients that this video is suspected 
                     # to be frozen
-                    menshnet.event.emit(self.event_name,self.last_state) 
+                    menshnet.event.emit(self.event_trigger,self.last_state) 
 
                 elif ave <= self.threshold and self.last_state == ABOVE_THRESHOLD:
                     # state transition sent event
                     self.last_state = BELOW_THRESHOLD 
                     # tell any listening clients that this video is no longer frozen
-                    menshnet.event.emit(self.event_name,self.last_state) 
+                    menshnet.event.emit(self.event_trigger,self.last_state) 
           
                 # remove oldest sample
                 del self.histogram[0]
