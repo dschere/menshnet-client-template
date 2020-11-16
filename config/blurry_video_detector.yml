@@ -1,0 +1,58 @@
+# setup a video pipeline that detects of the video is frozen
+# from a camera. 
+#
+# Client Usage:
+#
+#    The client creates a git repo, first by cloning the menshnet-client-template 
+#    which contains demos and premade gimel modules such as 
+#    sensors/frozen_video_detector.py 
+#
+#    # register git repo 
+#    import menshnet
+#
+#    # this will load yml files in the config folder in the root directory.
+#    # each of these can be launched later
+#    menshnet.register(apiKey, path_to_git_repo)
+#
+#    import menshnet
+#
+#    pipeline = menshnet.launch(apiKey, "frozen-video-detector", {
+#        url: ...,
+#        width: 720, # override default
+#        height: 1024, # override default
+#    })
+#    pipeline.event_handler("frozen-video", event_handler)
+#    pipeline.run()
+#
+#
+#
+name: blurry-video-detector
+pipeline:
+   video_source:
+      input:
+         # url to connect to a live stream. 
+         url: $url
+      output: 
+         # scale to 352x240 be default 
+         width: $width 352 
+         height: $height 240
+         # one frame every 2 seconds by default    
+         frame_interval: $interval    2
+         # convert pixel format to grayscale by default
+         pix_fmt: $pix_fmt     gray
+   gimels:
+      # list of processors for handling output array data
+      - 
+         # receives the output of the prior gimel
+         module: "sensors/blurry_video_detector.py"
+         config:
+            # this is what gets passed to the on_init() function
+            # in sensors/frozen_video_detector.py
+            # --------------------------------------------------
+            histogram_size: $histogram_size 5
+            # event name
+            event_name: video-is-blurry
+            threshold: $threshold   100
+     
+
+
