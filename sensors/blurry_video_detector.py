@@ -16,6 +16,7 @@ class Application:
         self.max_hsize = config.get("histogram_size", 5)
         self.event_blurry = config.get("event_name","video-blurry")
         self.is_blurry = False
+        self.frame_count = 0;
 
     def on_frame(self, menshnet, frame):
         """ 
@@ -26,12 +27,16 @@ class Application:
         numpy = menshnet.lib.numpy
 
         blur_map = cv2.Laplacian(frame, cv2.CV_64F)
-        score = numpy.var(blur_map)
+        score = float(numpy.var(blur_map))
         self.hist.append(score)
+
+        menshnet.log.debug("frame %d, score %f" % (self.frame_count,score))
+        self.frame_count += 1
+
 
         # use Laplacian transform as a high pass filter 
         if len(self.hist) == self.max_hsize: 
-            ave = sum(self.hist)/len(self.max_hsize)
+            ave = sum(self.hist)/len(self.hist)
             # if the average variance of samples falled below threshold then
             # then consider the image to be blurry.
             if ave < self.threshold:
