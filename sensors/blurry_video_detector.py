@@ -12,7 +12,7 @@ Demonstrates this detector running on mechnet
 class Application:
     def on_init(self, config):
         self.hist = []
-        self.threshold = config.get("threshold", self.threshold)
+        self.threshold = config.get("threshold", 100)
         self.max_hsize = config.get("histogram_size", 5)
         self.event_blurry = config.get("event_name","video-blurry")
         self.is_blurry = False
